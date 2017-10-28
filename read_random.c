@@ -13,7 +13,7 @@ typedef unsigned int uint;
 
 #define PRINT false
 
-#define NUM_INTS ((size_t) 1e8)
+#define NUM_INTS 10
 #define FILE "random_ints.bin"
 
 #define p(s) printf(s"\n")
