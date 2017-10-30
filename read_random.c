@@ -5,13 +5,14 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <sys/fcntl.h>
+#include <sys/stat.h>
 #include <unistd.h>
 #include <string.h>
 #include <errno.h>
 
 typedef unsigned int uint;
 
-#define PRINT false
+#define PRINT true
 
 #define NUM_INTS 10
 #define FILE "random_ints.bin"
@@ -46,16 +47,16 @@ void *random_bytes(size_t num_bytes) {
 }
 
 void print_ints(const char *const prefix, const int *const ints, const size_t num_ints) {
-    #if (!PRINT)
-    return;
-    #endif
+//    #if (!PRINT)
+//    return;
+//    #endif
     for (uint i = 0; i < num_ints; i++) {
         printf("%s%u: %d\n", prefix, i, ints[i]);
     }
 }
 
 ssize_t write_ints(const char *const filename, const int *const ints, const size_t num_ints) {
-    const int fd = open(filename, O_WRONLY | O_CREAT);
+    const int fd = open(filename, O_WRONLY | O_CREAT, S_IRUSR | S_IWUSR);
     if (fd == -1) {
         return -1;
     }
@@ -85,6 +86,9 @@ ssize_t read_ints(const char *const filename, int *const ints, const size_t num_
 }
 
 void test(size_t num_ints) {
+    p("If generating random numbers stalls, then /dev/random might be empty");
+
+    printf("NUM_INTS: %u\n\n", NUM_INTS);
     p("Generating random ints:");
     const int *const random_ints = (int *) random_bytes(num_ints * sizeof(int));
     check_alloc(random_ints);
