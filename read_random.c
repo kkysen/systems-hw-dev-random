@@ -117,6 +117,9 @@ void test(size_t num_ints) {
         p("Verification that written ints are the same:");
     }
     print_ints("\trandom ", ints_from_file, num_ints);
+    
+    free((int *) random_ints);
+    free(ints_from_file);
 }
 
 int main() {
